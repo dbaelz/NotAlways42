@@ -21,5 +21,12 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:20.0.+'
+    compile 'com.google.android.gms:play-services:6.1.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+// Signing the APK with the NotAlways42.signing property and external config files
+if (project.hasProperty("NotAlways42.signing")
+        && new File(project.property("NotAlways42.signing") + "/NotAlways42.gradle").exists()) {
+    apply from: project.property("NotAlways42.signing") + "/NotAlways42.gradle";
 }
