@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin"
+    android:orientation="vertical"
+    tools:context="de.dbaelz.na42.fragment.MenuFragment">
+
+    <Button
+        android:id="@+id/menu_singleplayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_singleplayer" />
+
+    <Button
+        android:id="@+id/menu_multiplayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_multiplayer" />
+
+    <Button
+        android:id="@+id/menu_achievement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_achievement" />
+
+    <Button
+        android:id="@+id/menu_leaderboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_leaderboard" />
+
+    <Button
+        android:id="@+id/menu_signout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:text="@string/menu_signout"
+        android:visibility="gone"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/menu_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:visibility="gone" />
+</LinearLayout>
