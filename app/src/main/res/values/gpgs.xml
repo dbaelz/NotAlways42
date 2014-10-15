@@ -3,4 +3,13 @@
     <!-- app id -->
     <string name="app_id">143088943006</string>
 
+    <!-- Achievements -->
+    <string name="achievement_v_for_victory">CgkInv-PhpUEEAIQAg</string>
+    <string name="achievement_with_no_luck">CgkInv-PhpUEEAIQAw</string>
+    <string name="achievement_good_guess">CgkInv-PhpUEEAIQBA</string>
+    <string name="achievement_persistent_player">CgkInv-PhpUEEAIQBQ</string>
+    <string name="achievement_42">CgkInv-PhpUEEAIQBg</string>
+
+    <!-- Leaderboards -->
+    <string name="leaderboard_multiplayer">CgkInv-PhpUEEAIQBw</string>
 </resources>

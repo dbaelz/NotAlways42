@@ -7,8 +7,9 @@
     <!-- Menu Fragment -->
     <string name="menu_singleplayer">Singleplayer</string>
     <string name="menu_multiplayer">Multiplayer</string>
-    <string name="menu_achievement">Achievement</string>
-    <string name="menu_leaderboard">Leaderboard</string>
+    <string name="menu_achievement">Achievements</string>
+    <string name="menu_leaderboard">Leaderboards</string>
     <string name="menu_signout">Sign Out</string>
+    <string name="menu_need_signin">Please sign in first</string>
 
 </resources>

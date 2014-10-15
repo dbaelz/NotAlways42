@@ -1,5 +1,8 @@
 package de.dbaelz.na42;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -7,16 +10,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.plus.Plus;
 
+import de.dbaelz.na42.event.GoogleApiClientEvent;
 import de.dbaelz.na42.fragment.MenuFragment;
+import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String LOG_TAG = "NotAlways42";
+    private static final int REQUEST_CODE_SIGNIN = 100;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -56,6 +63,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(LOG_TAG, "onConnected");
+        EventBus.getDefault().postSticky(new GoogleApiClientEvent(true));
     }
 
     @Override
@@ -67,5 +75,39 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(LOG_TAG, "onConnectionFailed");
+        EventBus.getDefault().postSticky(new GoogleApiClientEvent(false));
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(this, REQUEST_CODE_SIGNIN);
+            } catch (IntentSender.SendIntentException e) {
+                mGoogleApiClient.connect();
+            }
+        } else {
+            int errorCode = connectionResult.getErrorCode();
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(errorCode, this, REQUEST_CODE_SIGNIN);
+            if (dialog != null) {
+                dialog.show();
+            } else {
+                // TODO: Handle error;
+                Log.d(LOG_TAG, "Error: Can't show error dialog");
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SIGNIN) {
+            if (resultCode == RESULT_OK) {
+                mGoogleApiClient.connect();
+            } else {
+                // TODO: Handle error;
+                Log.d(LOG_TAG, "Error: resultCode != RESULT_OK");
+            }
+        }
+    }
+
+    public GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
     }
 }
