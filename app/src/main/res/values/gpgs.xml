@@ -8,8 +8,11 @@
     <string name="achievement_with_no_luck">CgkInv-PhpUEEAIQAw</string>
     <string name="achievement_good_guess">CgkInv-PhpUEEAIQBA</string>
     <string name="achievement_persistent_player">CgkInv-PhpUEEAIQBQ</string>
+    <string name="achievement_clairvoyant">CgkInv-PhpUEEAIQCA</string>
+    <string name="achievement_so_unlucky">CgkInv-PhpUEEAIQCw</string>
     <string name="achievement_42">CgkInv-PhpUEEAIQBg</string>
 
     <!-- Leaderboards -->
+    <string name="leaderboard_singleplayer">CgkInv-PhpUEEAIQCg</string>
     <string name="leaderboard_multiplayer">CgkInv-PhpUEEAIQBw</string>
 </resources>

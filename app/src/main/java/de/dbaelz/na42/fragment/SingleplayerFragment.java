@@ -11,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+
 import java.util.Random;
 
 import de.dbaelz.na42.MainActivity;
@@ -117,11 +120,13 @@ public class SingleplayerFragment extends Fragment {
         if (mCurrentRound > MAX_ROUND) {
             mGuess.setVisibility(View.GONE);
             mGameFinished.setVisibility(View.VISIBLE);
-            if (mWonRounds >= 3) {
+            boolean hasWon = mWonRounds >= 3;
+            if (hasWon) {
                 mGameFinishedText.setText(getString(R.string.game_finished_won));
             } else {
                 mGameFinishedText.setText(getString(R.string.game_finished_lost));
             }
+            processRewards(hasWon, mWonRounds);
         }
     }
 
@@ -142,6 +147,35 @@ public class SingleplayerFragment extends Fragment {
             case 5:
                 mRoundIndicator5.setBackgroundColor(color);
                 break;
+        }
+    }
+
+    private void processRewards(boolean hasWonTheGame, int wonRounds) {
+        GoogleApiClient client = mActivity.getGoogleApiClient();
+        if (client != null && client.isConnected()) {
+            if (hasWonTheGame) {
+                Games.Achievements.unlock(client, getString(R.string.achievement_v_for_victory));
+                Games.Achievements.increment(client, getString(R.string.achievement_good_guess), 1);
+                Games.Achievements.increment(client, getString(R.string.achievement_persistent_player), 1);
+                Games.Achievements.increment(client, getString(R.string.achievement_42), 1);
+            } else {
+                Games.Achievements.unlock(client, getString(R.string.achievement_with_no_luck));
+            }
+
+            // Achievements for won/lost rounds
+            if (wonRounds > 0) {
+                Games.Achievements.increment(client, getString(R.string.achievement_clairvoyant), wonRounds);
+            }
+            if ((MAX_ROUND - wonRounds) > 0) {
+                Games.Achievements.increment(client, getString(R.string.achievement_so_unlucky), MAX_ROUND - wonRounds);
+            }
+
+            // Singleplayer Leaderboard
+            int winBonus = hasWonTheGame ? 100 : 0;
+            int scoreLeaderboard = wonRounds * 100 + winBonus;
+            Games.Leaderboards.submitScore(client, getString(R.string.leaderboard_singleplayer), scoreLeaderboard);
+        } else {
+            // TODO: Alternative handling (e.g. save local until player is connected)
         }
     }
 }
