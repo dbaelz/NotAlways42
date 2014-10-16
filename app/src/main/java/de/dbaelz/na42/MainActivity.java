@@ -1,5 +1,6 @@
 package de.dbaelz.na42;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -15,6 +17,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.plus.Plus;
 
+import de.dbaelz.na42.event.GameFinishedEvent;
 import de.dbaelz.na42.event.GoogleApiClientEvent;
 import de.dbaelz.na42.fragment.MenuFragment;
 import de.greenrobot.event.EventBus;
@@ -43,6 +46,18 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
         mMenuFragment = new MenuFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mMenuFragment).commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -104,6 +119,17 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                 // TODO: Handle error;
                 Log.d(LOG_TAG, "Error: resultCode != RESULT_OK");
             }
+        }
+    }
+
+    public void onEvent(GameFinishedEvent event) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, mMenuFragment).commit();
+    }
+
+    public void hideSoftKeyboard() {
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 

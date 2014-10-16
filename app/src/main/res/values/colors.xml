@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="round_indicator_default">#969696</color>
+    <color name="round_indicator_won">#669900</color>
+    <color name="round_indicator_lost">#CC0000</color>
+    <color name="round_indicator_text">#EEEEEE</color>
+
+    <color name="text_color">#0099CC</color>
+</resources>

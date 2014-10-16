@@ -1,7 +1,6 @@
 package de.dbaelz.na42.fragment;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +71,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         boolean isConnected = mActivity.getGoogleApiClient().isConnected();
         switch (view.getId()) {
             case R.id.menu_singleplayer:
-                // TODO: Start singleplayer game
+                mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new SingleplayerFragment()).commit();
                 break;
             case R.id.menu_multiplayer:
                 if (isConnected) {

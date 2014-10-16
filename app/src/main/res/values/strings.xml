@@ -12,4 +12,26 @@
     <string name="menu_signout">Sign Out</string>
     <string name="menu_need_signin">Please sign in first</string>
 
+    <!-- Singleplayer Fragment-->
+    <string name="singleplayer_round">Round %1$d</string>
+
+    <string name="singleplayer_invalid_number">Invalid number</string>
+    <string name="singleplayer_correct_guess">You\'ve guessed correctly!</string>
+    <string name="singleplayer_wrong_guess">You\'ve guessed wrong!</string>
+
+    <!-- Layout Scoreboard -->
+    <string name="scoreboard_rounds_1">1</string>
+    <string name="scoreboard_rounds_2">2</string>
+    <string name="scoreboard_rounds_3">3</string>
+    <string name="scoreboard_rounds_4">4</string>
+    <string name="scoreboard_rounds_5">5</string>
+
+    <!-- Layout Guess -->
+    <string name="guess_hint">Your guess (number from 1 to 5)</string>
+    <string name="guess_button_text">Guess</string>
+
+    <!-- Layout Game Finished -->
+    <string name="game_finished_won">You won the game</string>
+    <string name="game_finished_lost">You lost the game</string>
+    <string name="game_finished_back">End game</string>
 </resources>
