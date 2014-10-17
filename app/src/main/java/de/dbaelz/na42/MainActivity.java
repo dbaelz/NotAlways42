@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.plus.Plus;
 
@@ -25,9 +26,6 @@ import de.greenrobot.event.EventBus;
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-    private static final String LOG_TAG = "NotAlways42";
-    private static final int REQUEST_CODE_SIGNIN = 100;
-
     private GoogleApiClient mGoogleApiClient;
 
     private MenuFragment mMenuFragment;
@@ -42,6 +40,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
                 .build();
 
         mMenuFragment = new MenuFragment();
@@ -77,34 +76,34 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d(LOG_TAG, "onConnected");
+        Log.d(Constants.LOG_TAG, "onConnected");
         EventBus.getDefault().postSticky(new GoogleApiClientEvent(true));
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(LOG_TAG, "onConnectionSuspended");
+        Log.d(Constants.LOG_TAG, "onConnectionSuspended");
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(LOG_TAG, "onConnectionFailed");
+        Log.d(Constants.LOG_TAG, "onConnectionFailed");
         EventBus.getDefault().postSticky(new GoogleApiClientEvent(false));
         if (connectionResult.hasResolution()) {
             try {
-                connectionResult.startResolutionForResult(this, REQUEST_CODE_SIGNIN);
+                connectionResult.startResolutionForResult(this, Constants.REQUEST_CODE_SIGNIN);
             } catch (IntentSender.SendIntentException e) {
                 mGoogleApiClient.connect();
             }
         } else {
             int errorCode = connectionResult.getErrorCode();
-            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(errorCode, this, REQUEST_CODE_SIGNIN);
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(errorCode, this, Constants.REQUEST_CODE_SIGNIN);
             if (dialog != null) {
                 dialog.show();
             } else {
                 // TODO: Handle error;
-                Log.d(LOG_TAG, "Error: Can't show error dialog");
+                Log.d(Constants.LOG_TAG, "Error: Can't show error dialog");
             }
         }
     }
@@ -112,12 +111,12 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SIGNIN) {
+        if (requestCode == Constants.REQUEST_CODE_SIGNIN) {
             if (resultCode == RESULT_OK) {
                 mGoogleApiClient.connect();
             } else {
                 // TODO: Handle error;
-                Log.d(LOG_TAG, "Error: resultCode != RESULT_OK");
+                Log.d(Constants.LOG_TAG, "Error: resultCode != RESULT_OK");
             }
         }
     }

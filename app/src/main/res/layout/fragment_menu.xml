@@ -13,6 +13,12 @@
         android:text="@string/menu_singleplayer" />
 
     <Button
+        android:id="@+id/menu_load_savegame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_load_savegame" />
+
+    <Button
         android:id="@+id/menu_multiplayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

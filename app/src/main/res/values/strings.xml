@@ -3,9 +3,16 @@
 
     <string name="app_name">Not Always 42</string>
     <string name="action_settings">Settings</string>
+    <string name="action_save">Save</string>
+
+    <!-- Savegame -->
+    <string name="savegame_error_loading">Error loading savegame</string>
+    <string name="savegame_saved">Savegame saved</string>
+    <string name="savegame_nosave_game_finished">You can\'t save a finished game</string>
 
     <!-- Menu Fragment -->
     <string name="menu_singleplayer">Singleplayer</string>
+    <string name="menu_load_savegame">Load Savegame</string>
     <string name="menu_multiplayer">Multiplayer</string>
     <string name="menu_achievement">Achievements</string>
     <string name="menu_leaderboard">Leaderboards</string>
