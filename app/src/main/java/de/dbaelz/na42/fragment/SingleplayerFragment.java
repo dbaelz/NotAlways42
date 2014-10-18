@@ -28,7 +28,7 @@ import java.util.Random;
 import de.dbaelz.na42.Constants;
 import de.dbaelz.na42.MainActivity;
 import de.dbaelz.na42.R;
-import de.dbaelz.na42.event.GameFinishedEvent;
+import de.dbaelz.na42.event.GameEndedEvent;
 import de.dbaelz.na42.model.SingleplayerSavegame;
 import de.greenrobot.event.EventBus;
 
@@ -111,7 +111,7 @@ public class SingleplayerFragment extends Fragment {
         mGameFinishedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new GameFinishedEvent());
+                EventBus.getDefault().post(new GameEndedEvent(false));
             }
         });
 
@@ -135,6 +135,9 @@ public class SingleplayerFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveGame();
+                return true;
+            case R.id.action_cancel:
+                EventBus.getDefault().post(new GameEndedEvent(true));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

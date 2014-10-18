@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
+    <item android:id="@+id/action_cancel"
+        android:title="@string/action_cancel"
+        android:icon="@drawable/ic_action_cancel"
+        android:orderInCategory="40"
+        android:showAsAction="ifRoom" />
     <item android:id="@+id/action_save"
         android:title="@string/action_save"
         android:icon="@drawable/ic_action_save"

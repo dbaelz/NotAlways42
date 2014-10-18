@@ -18,7 +18,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.plus.Plus;
 
-import de.dbaelz.na42.event.GameFinishedEvent;
+import de.dbaelz.na42.event.GameEndedEvent;
 import de.dbaelz.na42.event.GoogleApiClientEvent;
 import de.dbaelz.na42.fragment.MenuFragment;
 import de.greenrobot.event.EventBus;
@@ -121,7 +121,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         }
     }
 
-    public void onEvent(GameFinishedEvent event) {
+    public void onEvent(GameEndedEvent event) {
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mMenuFragment).commit();
     }
 
