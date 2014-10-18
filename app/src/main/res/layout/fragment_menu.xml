@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/default_margin"
+    android:layout_margin="@dimen/margin_default"
     android:orientation="vertical"
     tools:context="de.dbaelz.na42.fragment.MenuFragment">
 
@@ -40,7 +40,7 @@
         android:id="@+id/menu_signout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginTop="@dimen/margin_default"
         android:text="@string/menu_signout"
         android:visibility="gone"/>
 
@@ -48,6 +48,6 @@
         android:id="@+id/menu_signin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginTop="@dimen/margin_default"
         android:visibility="gone" />
 </LinearLayout>

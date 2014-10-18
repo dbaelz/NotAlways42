@@ -11,13 +11,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/text_color"
-        android:textSize="32sp"
-        android:text="@string/app_name"/>
+        android:textSize="32sp" />
 
     <Button
         android:id="@+id/game_finished_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_margin="@dimen/margin_default"
         android:text="@string/game_finished_back" />
 </LinearLayout>
