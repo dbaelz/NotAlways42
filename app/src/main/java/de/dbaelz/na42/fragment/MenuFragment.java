@@ -1,6 +1,7 @@
 package de.dbaelz.na42.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     private SignInButton mSignInButton;
     private Button mSignOutButton;
 
+    private ProgressDialog mProgressDialog;
+
     public MenuFragment() {
     }
 
@@ -63,6 +66,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         mActivity = (MainActivity) getActivity();
         switchSignButton(mActivity.getGoogleApiClient().isConnected());
 
+        mProgressDialog = new ProgressDialog(mActivity);
         return view;
     }
 
@@ -116,6 +120,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.menu_signin:
+                showProgressDialog();
                 mActivity.getGoogleApiClient().connect();
                 break;
             case R.id.menu_signout:
@@ -150,7 +155,16 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     }
 
     public void onEvent(GoogleApiClientEvent event) {
+        mProgressDialog.dismiss();
         switchSignButton(event.isConnected());
+    }
+
+    private void showProgressDialog() {
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage(getString(R.string.menu_progress));
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
     }
 
     private void switchSignButton(boolean connected) {

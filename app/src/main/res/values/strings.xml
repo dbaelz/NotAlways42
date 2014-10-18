@@ -18,6 +18,7 @@
     <string name="menu_leaderboard">Leaderboards</string>
     <string name="menu_signout">Sign Out</string>
     <string name="menu_need_signin">Please sign in first</string>
+    <string name="menu_progress">Signin...</string>
 
     <!-- Singleplayer Fragment-->
     <string name="singleplayer_round">Round %1$d</string>
