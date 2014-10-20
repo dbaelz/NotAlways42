@@ -11,24 +11,9 @@ import org.json.JSONObject;
 import java.util.UUID;
 
 import de.dbaelz.na42.Constants;
+import de.dbaelz.na42.RoundState;
 
 public class SingleplayerSavegame implements Parcelable {
-    public enum State {
-        NOT_PLAYED(0),
-        WON(1),
-        LOST(2);
-
-        private int state;
-
-        private State(int state) {
-            this.state = state;
-        }
-
-        public int getValue() {
-            return state;
-        }
-    }
-
     private final String mUUID;
     private int mCurrentRound;
     private int[] mRounds;
@@ -85,7 +70,7 @@ public class SingleplayerSavegame implements Parcelable {
         return -1;
     }
 
-    public void setRound(int round, State state) {
+    public void setRound(int round, RoundState state) {
         if (round > 0 && round <= mRounds.length) {
             mRounds[round - 1] = state.getValue();
         }

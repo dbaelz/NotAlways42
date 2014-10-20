@@ -28,6 +28,7 @@ import java.util.Random;
 import de.dbaelz.na42.Constants;
 import de.dbaelz.na42.MainActivity;
 import de.dbaelz.na42.R;
+import de.dbaelz.na42.RoundState;
 import de.dbaelz.na42.event.GameEndedEvent;
 import de.dbaelz.na42.model.SingleplayerSavegame;
 import de.greenrobot.event.EventBus;
@@ -127,7 +128,12 @@ public class SingleplayerFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.singleplayer, menu);
+        GoogleApiClient client = mActivity.getGoogleApiClient();
+        if (client != null && client.isConnected()) {
+            inflater.inflate(R.menu.singleplayer_signed_in, menu);
+        } else {
+            inflater.inflate(R.menu.singleplayer, menu);
+        }
     }
 
     @Override
@@ -148,17 +154,16 @@ public class SingleplayerFragment extends Fragment {
         Random r = new Random();
         int randomNumber = r.nextInt(MAX_NUMBER) + 1;
 
-        // TODO: Make it more appealing!
         int currentRound = mSavegame.getCurrentRound();
         if (randomNumber == inputNumber) {
             Toast.makeText(mActivity, getString(R.string.singleplayer_correct_guess), Toast.LENGTH_SHORT).show();
             changeRoundIndicator(currentRound, getResources().getColor(R.color.round_indicator_won));
-            mSavegame.setRound(currentRound, SingleplayerSavegame.State.WON);
+            mSavegame.setRound(currentRound, RoundState.WON);
             mSavegame.incrementWonRounds();
         } else {
             Toast.makeText(mActivity, getString(R.string.singleplayer_wrong_guess), Toast.LENGTH_SHORT).show();
             changeRoundIndicator(currentRound, getResources().getColor(R.color.round_indicator_lost));
-            mSavegame.setRound(currentRound, SingleplayerSavegame.State.LOST);
+            mSavegame.setRound(currentRound, RoundState.LOST);
         }
 
 
@@ -174,15 +179,6 @@ public class SingleplayerFragment extends Fragment {
             processRewards(hasWon);
         } else {
             mSavegame.incrementCurrentRound();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUEST_CODE_SAVE_SAVEGAME) {
-
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -245,13 +241,11 @@ public class SingleplayerFragment extends Fragment {
             int winBonus = hasWonTheGame ? 100 : 0;
             int scoreLeaderboard = wonRounds * 100 + winBonus;
             Games.Leaderboards.submitScore(client, getString(R.string.leaderboard_singleplayer), scoreLeaderboard);
-        } else {
-            // TODO: Alternative handling (e.g. save local until player is connected)
         }
     }
 
     private void saveGame() {
-        if (mSavegame.getRound(5) != SingleplayerSavegame.State.NOT_PLAYED.getValue()) {
+        if (mSavegame.getRound(5) != RoundState.NOT_PLAYED.getValue()) {
             Toast.makeText(mActivity, getString(R.string.savegame_nosave_game_finished), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -261,7 +255,6 @@ public class SingleplayerFragment extends Fragment {
             new SaveSavegameTask().execute();
         } else {
             Toast.makeText(mActivity, getString(R.string.menu_need_signin), Toast.LENGTH_SHORT).show();
-            // TODO: Alternative saving local?
         }
     }
 
