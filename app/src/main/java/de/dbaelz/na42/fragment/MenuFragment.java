@@ -1,7 +1,9 @@
 package de.dbaelz.na42.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,11 +15,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.multiplayer.Multiplayer;
+import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadata;
 import com.google.android.gms.games.snapshot.Snapshots;
+
+import java.util.ArrayList;
 
 import de.dbaelz.na42.Constants;
 import de.dbaelz.na42.MainActivity;
@@ -87,7 +97,25 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         boolean isConnected = mActivity.getGoogleApiClient().isConnected();
         switch (view.getId()) {
             case R.id.menu_singleplayer:
-                mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new SingleplayerFragment()).commit();
+                if (isConnected) {
+                    mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new SingleplayerFragment()).commit();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                    builder.setMessage("Please sign in first for savegames, achievements and leaderboards.")
+                            .setTitle("Continue without Google+ sign in?");
+                    builder.setPositiveButton(R.string.menu_singleplayer_without_signin_ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new SingleplayerFragment()).commit();
+                        }
+                    }).setNegativeButton(R.string.menu_singleplayer_without_signin_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                }
                 break;
             case R.id.menu_load_savegame:
                 if (isConnected) {
@@ -99,8 +127,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.menu_multiplayer:
                 if (isConnected) {
-                    // TODO: Start multiplayer game
-                    //mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, FRAGMENT).commit();
+                    mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new MultiplayerFragment()).commit();
                 } else {
                     Toast.makeText(mActivity, getString(R.string.menu_need_signin), Toast.LENGTH_SHORT).show();
                 }

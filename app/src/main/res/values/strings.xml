@@ -19,14 +19,21 @@
     <string name="menu_leaderboard">Leaderboards</string>
     <string name="menu_signout">Sign Out</string>
     <string name="menu_need_signin">Please sign in first</string>
-    <string name="menu_progress">Signin...</string>
+    <string name="menu_progress">Sign in...</string>
+    <string name="menu_singleplayer_without_signin_ok">Continue</string>
+    <string name="menu_singleplayer_without_signin_cancel">Cancel</string>
 
-    <!-- Singleplayer Fragment-->
+    <!-- Singleplayer Fragment -->
     <string name="singleplayer_round">Round %1$d</string>
-
     <string name="singleplayer_invalid_number">Invalid number</string>
     <string name="singleplayer_correct_guess">You\'ve guessed correctly!</string>
     <string name="singleplayer_wrong_guess">You\'ve guessed wrong!</string>
+
+    <!-- Multiplayer Fragment -->
+    <string name="multiplayer_round_guess">Round %1$d - Guess</string>
+    <string name="multiplayer_round_challenge">Round %1$d - Challenge</string>
+    <string name="challenge_hint">Your challenge (number from 1 to 5)</string>
+    <string name="challenge_button_text">Challenge</string>
 
     <!-- Layout Scoreboard -->
     <string name="scoreboard_rounds_1">1</string>

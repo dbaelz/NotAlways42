@@ -9,6 +9,7 @@ public class Constants {
     public static final int REQUEST_CODE_SELECT_SAVEGAME = 20;
     public static final int REQUEST_CODE_LOAD_SAVEGAME = 21;
     public static final int REQUEST_CODE_SAVE_SAVEGAME = 22;
+    public static final int REQUEST_CODE_SELECT_PLAYER = 23;
 
     // Singleplayer Savegame
     public static final String SAVEGAME_PARCEL = "savegame_parcel";

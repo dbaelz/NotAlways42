@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/multiplayer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="de.dbaelz.na42.fragment.MultiplayerFragment">
+
+    <TextView
+        android:id="@+id/multiplayer_name_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:textSize="24sp" />
+
+    <include
+        android:id="@+id/multiplayer_scorboard_user"
+        layout="@layout/layout_scoreboard" />
+
+
+    <TextView
+        android:id="@+id/multiplayer_name_opponent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:textSize="24sp" />
+
+    <include
+        android:id="@+id/multiplayer_scorboard_opponent"
+        layout="@layout/layout_scoreboard" />
+
+    <include layout="@layout/layout_guess" />
+
+    <include layout="@layout/layout_game_finished" />
+</LinearLayout>
