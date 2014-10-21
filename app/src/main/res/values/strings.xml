@@ -15,13 +15,18 @@
     <string name="menu_singleplayer">Singleplayer</string>
     <string name="menu_load_savegame">Load Savegame</string>
     <string name="menu_multiplayer">Multiplayer</string>
+    <string name="menu_quests">Quests</string>
     <string name="menu_achievement">Achievements</string>
     <string name="menu_leaderboard">Leaderboards</string>
     <string name="menu_signout">Sign Out</string>
     <string name="menu_need_signin">Please sign in first</string>
     <string name="menu_progress">Sign in...</string>
+    <string name="menu_singleplayer_alert_title">Continue without Google+ sign in?</string>
+    <string name="menu_singleplayer_alert">You have to sign in for achievements, leaderboard and savegames</string>
     <string name="menu_singleplayer_without_signin_ok">Continue</string>
     <string name="menu_singleplayer_without_signin_cancel">Cancel</string>
+    <string name="menu_quest_completed">You completed the quest %1$s</string>
+    <string name="menu_quest_reward">Your reward: %1$s</string>
 
     <!-- Singleplayer Fragment -->
     <string name="singleplayer_round">Round %1$d</string>

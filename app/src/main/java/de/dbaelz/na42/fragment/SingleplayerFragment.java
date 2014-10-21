@@ -1,6 +1,5 @@
 package de.dbaelz.na42.fragment;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -57,6 +56,7 @@ public class SingleplayerFragment extends Fragment {
     private Button mGameFinishedButton;
 
     private SingleplayerSavegame mSavegame;
+    private int mInvalidNumberCounter;
 
     public SingleplayerFragment() {
     }
@@ -102,6 +102,7 @@ public class SingleplayerFragment extends Fragment {
                 if (inputNumber >= MIN_NUMBER && inputNumber <= MAX_NUMBER) {
                     handleRound(inputNumber);
                 } else {
+                    mInvalidNumberCounter++;
                     Toast.makeText(mActivity, getString(R.string.singleplayer_invalid_number), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -112,7 +113,7 @@ public class SingleplayerFragment extends Fragment {
         mGameFinishedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new GameEndedEvent(false));
+                gameEnded(false);
             }
         });
 
@@ -143,7 +144,7 @@ public class SingleplayerFragment extends Fragment {
                 saveGame();
                 return true;
             case R.id.action_cancel:
-                EventBus.getDefault().post(new GameEndedEvent(true));
+                gameEnded(true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -237,6 +238,9 @@ public class SingleplayerFragment extends Fragment {
                 Games.Achievements.increment(client, getString(R.string.achievement_so_unlucky), MAX_ROUND - wonRounds);
             }
 
+            // Event when game finished
+            Games.Events.increment(client, getString(R.string.event_finish_a_game), 1);
+
             // Singleplayer Leaderboard
             int winBonus = hasWonTheGame ? 100 : 0;
             int scoreLeaderboard = wonRounds * 100 + winBonus;
@@ -255,6 +259,14 @@ public class SingleplayerFragment extends Fragment {
             new SaveSavegameTask().execute();
         } else {
             Toast.makeText(mActivity, getString(R.string.menu_need_signin), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void gameEnded(boolean canceled) {
+        EventBus.getDefault().post(new GameEndedEvent(canceled));
+        GoogleApiClient client = mActivity.getGoogleApiClient();
+        if (client != null && client.isConnected()) {
+            Games.Events.increment(client, getString(R.string.event_typed_an_invalid_number), mInvalidNumberCounter);
         }
     }
 

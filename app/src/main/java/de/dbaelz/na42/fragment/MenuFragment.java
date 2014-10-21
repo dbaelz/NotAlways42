@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +16,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.multiplayer.Multiplayer;
-import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
-import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
-import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
-import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
+import com.google.android.gms.games.quest.Quest;
+import com.google.android.gms.games.quest.QuestUpdateListener;
+import com.google.android.gms.games.quest.Quests;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadata;
 import com.google.android.gms.games.snapshot.Snapshots;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.dbaelz.na42.Constants;
 import de.dbaelz.na42.MainActivity;
@@ -36,12 +37,13 @@ import de.dbaelz.na42.event.GoogleApiClientEvent;
 import de.dbaelz.na42.model.SingleplayerSavegame;
 import de.greenrobot.event.EventBus;
 
-public class MenuFragment extends Fragment implements View.OnClickListener {
+public class MenuFragment extends Fragment implements View.OnClickListener, QuestUpdateListener, ResultCallback<Quests.ClaimMilestoneResult> {
     private MainActivity mActivity;
 
     private Button mSingleplayer;
     private Button mLoadSavegame;
     private Button mMultiplayer;
+    private Button mQuests;
     private Button mAchievement;
     private Button mLeaderboard;
     private SignInButton mSignInButton;
@@ -60,6 +62,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         mSingleplayer = (Button) view.findViewById(R.id.menu_singleplayer);
         mLoadSavegame = (Button) view.findViewById(R.id.menu_load_savegame);
         mMultiplayer = (Button) view.findViewById(R.id.menu_multiplayer);
+        mQuests = (Button) view.findViewById(R.id.menu_quests);
         mAchievement = (Button) view.findViewById(R.id.menu_achievement);
         mLeaderboard = (Button) view.findViewById(R.id.menu_leaderboard);
         mSignInButton = (SignInButton) view.findViewById(R.id.menu_signin);
@@ -68,6 +71,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         mSingleplayer.setOnClickListener(this);
         mLoadSavegame.setOnClickListener(this);
         mMultiplayer.setOnClickListener(this);
+        mQuests.setOnClickListener(this);
         mAchievement.setOnClickListener(this);
         mLeaderboard.setOnClickListener(this);
         mSignInButton.setOnClickListener(this);
@@ -101,8 +105,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                     mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new SingleplayerFragment()).commit();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-                    builder.setMessage("Please sign in first for savegames, achievements and leaderboards.")
-                            .setTitle("Continue without Google+ sign in?");
+                    builder.setMessage(mActivity.getString(R.string.menu_singleplayer_alert))
+                            .setTitle(mActivity.getString(R.string.menu_singleplayer_alert_title));
                     builder.setPositiveButton(R.string.menu_singleplayer_without_signin_ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new SingleplayerFragment()).commit();
@@ -114,7 +118,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
-
                 }
                 break;
             case R.id.menu_load_savegame:
@@ -128,6 +131,14 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             case R.id.menu_multiplayer:
                 if (isConnected) {
                     mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new MultiplayerFragment()).commit();
+                } else {
+                    Toast.makeText(mActivity, getString(R.string.menu_need_signin), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.menu_quests:
+                if (isConnected) {
+                    Intent questsIntent = Games.Quests.getQuestsIntent(mActivity.getGoogleApiClient(), Quest.QUEST_STATE_ALL);
+                    startActivityForResult(questsIntent, 0);
                 } else {
                     Toast.makeText(mActivity, getString(R.string.menu_need_signin), Toast.LENGTH_SHORT).show();
                 }
@@ -181,9 +192,36 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onQuestCompleted(Quest quest) {
+        Toast.makeText(mActivity, String.format(mActivity.getString(R.string.menu_quest_completed), quest.getName()), Toast.LENGTH_SHORT).show();
+        GoogleApiClient client = mActivity.getGoogleApiClient();
+        if (client != null && client.isConnected()){
+            Games.Quests.claim(client, quest.getQuestId(), quest.getCurrentMilestone().getMilestoneId())
+                    .setResultCallback(this);
+        }
+    }
+
+    @Override
+    public void onResult(Quests.ClaimMilestoneResult result) {
+        if (result.getStatus().isSuccess()) {
+            String jsonString = new String(result.getQuest().getCurrentMilestone().getCompletionRewardData());
+            try {
+                JSONObject object = new JSONObject(jsonString);
+                String reward = object.getString("item");
+                Toast.makeText(mActivity, String.format(mActivity.getString(R.string.menu_quest_reward), reward), Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                Log.e(Constants.LOG_TAG, "JSON syntax error!");
+            }
+        }
+    }
+
     public void onEvent(GoogleApiClientEvent event) {
         mProgressDialog.dismiss();
         switchSignButton(event.isConnected());
+        if (event.isConnected() && mActivity.getGoogleApiClient() != null) {
+            Games.Quests.registerQuestUpdateListener(mActivity.getGoogleApiClient(), this);
+        }
     }
 
     private void showProgressDialog() {

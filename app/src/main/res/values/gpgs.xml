@@ -15,4 +15,8 @@
     <!-- Leaderboards -->
     <string name="leaderboard_singleplayer">CgkInv-PhpUEEAIQCg</string>
     <string name="leaderboard_multiplayer">CgkInv-PhpUEEAIQBw</string>
+
+    <!-- Events -->
+    <string name="event_typed_an_invalid_number">CgkInv-PhpUEEAIQDA</string>
+    <string name="event_finish_a_game">CgkInv-PhpUEEAIQDQ</string>
 </resources>

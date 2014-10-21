@@ -25,6 +25,12 @@
         android:text="@string/menu_multiplayer" />
 
     <Button
+        android:id="@+id/menu_quests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_quests" />
+
+    <Button
         android:id="@+id/menu_achievement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
