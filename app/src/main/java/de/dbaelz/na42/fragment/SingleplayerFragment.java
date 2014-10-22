@@ -1,5 +1,7 @@
 package de.dbaelz.na42.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -274,8 +276,10 @@ public class SingleplayerFragment extends Fragment {
 
         @Override
         protected Snapshots.CommitSnapshotResult doInBackground(Void... params) {
+            Bitmap coverImage = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.ic_launcher);
             SnapshotMetadataChange metadata = new SnapshotMetadataChange.Builder()
-                    .setDescription("Round " + mSavegame.getCurrentRound() + " with " + mSavegame.getWonRounds() + " games won")
+                    .setDescription(String.format(mActivity.getString(R.string.singleplayer_savegame_text), mSavegame.getCurrentRound(), mSavegame.getWonRounds()))
+                    .setCoverImage(coverImage)
                     .build();
             byte[] data = mSavegame.toBytes();
             Snapshots.OpenSnapshotResult openSnapshot = Games.Snapshots.open(mActivity.getGoogleApiClient(), mSavegame.getUUID(), true).await();
@@ -292,7 +296,6 @@ public class SingleplayerFragment extends Fragment {
         @Override
         protected void onPostExecute(Snapshots.CommitSnapshotResult result) {
             if (result != null) {
-                // TODO: Report saving. End game?
                 Toast.makeText(mActivity, getString(R.string.savegame_saved), Toast.LENGTH_SHORT).show();
             }
         }

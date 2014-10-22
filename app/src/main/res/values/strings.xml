@@ -33,6 +33,7 @@
     <string name="singleplayer_invalid_number">Invalid number</string>
     <string name="singleplayer_correct_guess">You\'ve guessed correctly!</string>
     <string name="singleplayer_wrong_guess">You\'ve guessed wrong!</string>
+    <string name="singleplayer_savegame_text">Current round: %1$d - Rounds won: %2$d</string>
 
     <!-- Multiplayer Fragment -->
     <string name="multiplayer_round_guess">Round %1$d - Guess</string>
