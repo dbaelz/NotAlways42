@@ -1,6 +1,5 @@
 package de.dbaelz.na42.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -88,6 +87,10 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
     public void onResume() {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
+        if (mActivity.getGoogleApiClient().isConnected()) {
+            Games.Quests.registerQuestUpdateListener(mActivity.getGoogleApiClient(), this);
+        }
+        switchSignButton(mActivity.getGoogleApiClient().isConnected());
     }
 
     @Override
@@ -181,12 +184,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
             } else {
 
             }
-        } else if (requestCode == Constants.REQUEST_CODE_LOAD_SAVEGAME) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null && data.hasExtra(Constants.SNAPSHOT_METADATA)) {
-
-                }
-            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -219,7 +216,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
     public void onEvent(GoogleApiClientEvent event) {
         mProgressDialog.dismiss();
         switchSignButton(event.isConnected());
-        if (event.isConnected() && mActivity.getGoogleApiClient() != null) {
+        if (event.isConnected()) {
             Games.Quests.registerQuestUpdateListener(mActivity.getGoogleApiClient(), this);
         }
     }
