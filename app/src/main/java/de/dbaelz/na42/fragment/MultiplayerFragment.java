@@ -271,32 +271,8 @@ public class MultiplayerFragment extends Fragment implements OnTurnBasedMatchUpd
 
         // Initial setup
         if (match.getData() == null) {
-            GoogleApiClient client = mActivity.getGoogleApiClient();
-
-            String playerId = Games.Players.getCurrentPlayerId(client);
-            String myParticipantId = match.getParticipantId(playerId);
-
-            ArrayList<String> participantIds = match.getParticipantIds();
-            String nextParticipantId = "";
-            for (String participantId : participantIds) {
-                if (participantId != myParticipantId) {
-                    nextParticipantId = participantId;
-                    break;
-                }
-            }
-            String player1Name = match.getParticipant(myParticipantId).getDisplayName();
-            String player2Name = "";
-            if (!nextParticipantId.isEmpty()) {
-                player2Name = match.getParticipant(nextParticipantId).getDisplayName();
-            }
-
-            MultiplayerData initialData = new MultiplayerData(MAX_ROUND, myParticipantId, nextParticipantId, player1Name, player2Name);
-
-            mPlayer1Name.setText(initialData.getPlayer1Name());
-            mPlayer2Name.setText(initialData.getPlayer2Name());
-            changeRoundIndicators(initialData);
-
-            takeTurn(match.getMatchId(), initialData.toBytes(), nextParticipantId);
+            MultiplayerData initialData = initDataAndUI(match);
+            takeTurn(match.getMatchId(), initialData.toBytes(), initialData.getPlayer2ID());
         }
     }
 
@@ -336,7 +312,12 @@ public class MultiplayerFragment extends Fragment implements OnTurnBasedMatchUpd
 
 
     private void playTurn(final TurnBasedMatch match) {
-        mData = new MultiplayerData(match.getData());
+        if (match.getData() == null) {
+            mData = initDataAndUI(match);
+        } else {
+            mData = new MultiplayerData(match.getData());
+        }
+
         Log.d(Constants.LOG_TAG, "Play my turn!");
         Log.d(Constants.LOG_TAG, mData.toString());
 
@@ -454,6 +435,34 @@ public class MultiplayerFragment extends Fragment implements OnTurnBasedMatchUpd
                         processResult(result);
                     }
                 });
+    }
+
+    private MultiplayerData initDataAndUI(TurnBasedMatch match) {
+        GoogleApiClient client = mActivity.getGoogleApiClient();
+        String playerId = Games.Players.getCurrentPlayerId(client);
+        String myParticipantId = match.getParticipantId(playerId);
+
+        ArrayList<String> participantIds = match.getParticipantIds();
+        String nextParticipantId = "";
+        for (String participantId : participantIds) {
+            if (participantId != myParticipantId) {
+                nextParticipantId = participantId;
+                break;
+            }
+        }
+        String player1Name = match.getParticipant(myParticipantId).getDisplayName();
+        String player2Name = "";
+        if (!nextParticipantId.isEmpty()) {
+            player2Name = match.getParticipant(nextParticipantId).getDisplayName();
+        }
+
+        MultiplayerData initialData = new MultiplayerData(MAX_ROUND, myParticipantId, nextParticipantId, player1Name, player2Name);
+
+        mPlayer1Name.setText(initialData.getPlayer1Name());
+        mPlayer2Name.setText(initialData.getPlayer2Name());
+        changeRoundIndicators(initialData);
+
+        return initialData;
     }
 
     private void changeRoundIndicators(MultiplayerData data) {
