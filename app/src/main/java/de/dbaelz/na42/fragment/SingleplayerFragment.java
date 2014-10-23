@@ -102,7 +102,7 @@ public class SingleplayerFragment extends Fragment {
         mRoundIndicator5 = (TextView) view.findViewById(R.id.round_indicator_5);
 
         mTextViewRound = (TextView) view.findViewById(R.id.guess_textview_round);
-        mTextViewRound.setText(String.format(getString(R.string.singleplayer_round), 1));
+        mTextViewRound.setText(String.format(mActivity.getString(R.string.singleplayer_round), 1));
 
         mEditText = (EditText) view.findViewById(R.id.guess_edittext);
 
@@ -121,7 +121,7 @@ public class SingleplayerFragment extends Fragment {
                     handleRound(inputNumber);
                 } else {
                     mInvalidNumberCounter++;
-                    Toast.makeText(mActivity, getString(R.string.singleplayer_invalid_number), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, mActivity.getString(R.string.singleplayer_invalid_number), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -175,13 +175,13 @@ public class SingleplayerFragment extends Fragment {
 
         int currentRound = mSavegame.getCurrentRound();
         if (randomNumber == inputNumber) {
-            Toast.makeText(mActivity, getString(R.string.singleplayer_correct_guess), Toast.LENGTH_SHORT).show();
-            changeRoundIndicator(currentRound, getResources().getColor(R.color.round_indicator_won));
+            Toast.makeText(mActivity, mActivity.getString(R.string.singleplayer_correct_guess), Toast.LENGTH_SHORT).show();
+            changeRoundIndicator(currentRound, mActivity.getResources().getColor(R.color.round_indicator_won));
             mSavegame.setRound(currentRound, RoundState.WON);
             mSavegame.incrementWonRounds();
         } else {
             Toast.makeText(mActivity, getString(R.string.singleplayer_wrong_guess), Toast.LENGTH_SHORT).show();
-            changeRoundIndicator(currentRound, getResources().getColor(R.color.round_indicator_lost));
+            changeRoundIndicator(currentRound, mActivity.getResources().getColor(R.color.round_indicator_lost));
             mSavegame.setRound(currentRound, RoundState.LOST);
         }
 
@@ -191,9 +191,9 @@ public class SingleplayerFragment extends Fragment {
             mGameFinished.setVisibility(View.VISIBLE);
             boolean hasWon = mSavegame.getWonRounds() >= 3;
             if (hasWon) {
-                mGameFinishedText.setText(getString(R.string.game_finished_won));
+                mGameFinishedText.setText(mActivity.getString(R.string.game_finished_won));
             } else {
-                mGameFinishedText.setText(getString(R.string.game_finished_lost));
+                mGameFinishedText.setText(mActivity.getString(R.string.game_finished_lost));
             }
             processRewards(hasWon);
         } else {
@@ -212,7 +212,7 @@ public class SingleplayerFragment extends Fragment {
             }
             changeRoundIndicator(i, color);
         }
-        mTextViewRound.setText(String.format(getString(R.string.singleplayer_round), mSavegame.getCurrentRound()));
+        mTextViewRound.setText(String.format(mActivity.getString(R.string.singleplayer_round), mSavegame.getCurrentRound()));
     }
 
     private void changeRoundIndicator(int round, int color) {
@@ -268,7 +268,7 @@ public class SingleplayerFragment extends Fragment {
 
     private void saveGame() {
         if (mSavegame.getRound(5) != RoundState.NOT_PLAYED.getValue()) {
-            Toast.makeText(mActivity, getString(R.string.savegame_nosave_game_finished), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, mActivity.getString(R.string.savegame_nosave_game_finished), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -276,7 +276,7 @@ public class SingleplayerFragment extends Fragment {
         if (client != null && client.isConnected()) {
             new SaveSavegameTask().execute();
         } else {
-            Toast.makeText(mActivity, getString(R.string.menu_need_signin), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, mActivity.getString(R.string.menu_need_signin), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -312,7 +312,7 @@ public class SingleplayerFragment extends Fragment {
         @Override
         protected void onPostExecute(Snapshots.CommitSnapshotResult result) {
             if (result != null) {
-                Toast.makeText(mActivity, getString(R.string.savegame_saved), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, mActivity.getString(R.string.savegame_saved), Toast.LENGTH_SHORT).show();
             }
         }
     }
