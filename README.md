@@ -23,7 +23,7 @@ android {
     }
 
     debug {
-      storeFile file(project.property("SNotAlways42.signing") + "/debug.keystore")
+      storeFile file(project.property("NotAlways42.signing") + "/debug.keystore")
       storePassword "android"
       keyAlias "androiddebugkey"
       keyPassword "android"

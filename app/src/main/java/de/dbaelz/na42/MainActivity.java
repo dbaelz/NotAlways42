@@ -80,21 +80,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onConnected(Bundle bundle) {
         Log.d(Constants.LOG_TAG, "onConnected");
         EventBus.getDefault().postSticky(new GoogleApiClientEvent(true));
