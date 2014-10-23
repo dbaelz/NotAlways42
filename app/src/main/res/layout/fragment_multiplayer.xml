@@ -1,39 +1,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/multiplayer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context="de.dbaelz.na42.fragment.MultiplayerFragment">
 
-    <TextView
-        android:id="@+id/multiplayer_name_user"
+    <LinearLayout
+        android:id="@+id/multiplayer_selection"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
-        android:gravity="center"
-        android:textColor="@color/text_color"
-        android:textSize="24sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <include
-        android:id="@+id/multiplayer_scorboard_user"
-        layout="@layout/layout_scoreboard" />
+        <Button
+            android:id="@+id/multiplayer_selection_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_half"
+            android:text="New" />
 
+        <Button
+            android:id="@+id/multiplayer_selection_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_half"
+            android:text="Search" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/multiplayer_name_opponent"
+    <LinearLayout
+        android:id="@+id/multiplayer_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
-        android:gravity="center"
-        android:textColor="@color/text_color"
-        android:textSize="24sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <include
-        android:id="@+id/multiplayer_scorboard_opponent"
-        layout="@layout/layout_scoreboard" />
+        <TextView
+            android:id="@+id/multiplayer_name_player1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_half"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:textSize="24sp" />
 
-    <include layout="@layout/layout_guess" />
+        <include
+            android:id="@+id/multiplayer_scorboard_player1"
+            layout="@layout/layout_scoreboard" />
 
-    <include layout="@layout/layout_game_finished" />
+
+        <TextView
+            android:id="@+id/multiplayer_name_player2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_half"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:textSize="24sp" />
+
+        <include
+            android:id="@+id/multiplayer_scorboard_player2"
+            layout="@layout/layout_scoreboard" />
+
+        <include layout="@layout/layout_guess" />
+
+        <include layout="@layout/layout_game_finished" />
+    </LinearLayout>
 </LinearLayout>

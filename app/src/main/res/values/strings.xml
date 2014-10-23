@@ -29,17 +29,21 @@
     <string name="menu_quest_reward">Your reward: %1$s</string>
 
     <!-- Singleplayer Fragment -->
+    <string name="singleplayer_savegame_text">Current round: %1$d - Rounds won: %2$d</string>
+
+    <!-- Multiplayer Fragment -->
+    <string name="multiplayer_match_automatching">Auto-matching</string>
+    <string name="multiplayer_match_complete">Complete</string>
+    <string name="multiplayer_match_expired">Expired</string>
+    <string name="multiplayer_match_canceled">Canceled</string>
+    <string name="multiplayer_winner">Winner: %1$s</string>
+    <string name="multiplayer_end_game">End game</string>
+
+    <!-- Game -->
     <string name="singleplayer_round">Round %1$d</string>
     <string name="singleplayer_invalid_number">Invalid number</string>
     <string name="singleplayer_correct_guess">You\'ve guessed correctly!</string>
     <string name="singleplayer_wrong_guess">You\'ve guessed wrong!</string>
-    <string name="singleplayer_savegame_text">Current round: %1$d - Rounds won: %2$d</string>
-
-    <!-- Multiplayer Fragment -->
-    <string name="multiplayer_round_guess">Round %1$d - Guess</string>
-    <string name="multiplayer_round_challenge">Round %1$d - Challenge</string>
-    <string name="challenge_hint">Your challenge (number from 1 to 5)</string>
-    <string name="challenge_button_text">Challenge</string>
 
     <!-- Layout Scoreboard -->
     <string name="scoreboard_rounds_1">1</string>

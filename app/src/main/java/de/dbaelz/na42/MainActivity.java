@@ -102,7 +102,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             if (dialog != null) {
                 dialog.show();
             } else {
-                // TODO: Handle error;
                 Log.d(Constants.LOG_TAG, "Error: Can't show error dialog");
             }
         }
@@ -115,7 +114,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             if (resultCode == RESULT_OK) {
                 mGoogleApiClient.connect();
             } else {
-                // TODO: Handle error;
                 Log.d(Constants.LOG_TAG, "Error: resultCode != RESULT_OK");
             }
         }

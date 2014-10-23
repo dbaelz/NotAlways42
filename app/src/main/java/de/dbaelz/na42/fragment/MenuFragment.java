@@ -193,7 +193,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
     public void onQuestCompleted(Quest quest) {
         Toast.makeText(mActivity, String.format(mActivity.getString(R.string.menu_quest_completed), quest.getName()), Toast.LENGTH_SHORT).show();
         GoogleApiClient client = mActivity.getGoogleApiClient();
-        if (client != null && client.isConnected()){
+        if (client != null && client.isConnected()) {
             Games.Quests.claim(client, quest.getQuestId(), quest.getCurrentMilestone().getMilestoneId())
                     .setResultCallback(this);
         }
@@ -216,7 +216,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
     public void onEvent(GoogleApiClientEvent event) {
         mProgressDialog.dismiss();
         switchSignButton(event.isConnected());
-        if (event.isConnected()) {
+        if (mActivity.getGoogleApiClient().isConnected()) {
             Games.Quests.registerQuestUpdateListener(mActivity.getGoogleApiClient(), this);
         }
     }

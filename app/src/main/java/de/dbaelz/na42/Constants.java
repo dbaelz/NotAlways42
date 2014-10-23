@@ -7,7 +7,8 @@ public class Constants {
     // Request codes for communication with GPGS
     public static final int REQUEST_CODE_SIGNIN = 10;
     public static final int REQUEST_CODE_SELECT_SAVEGAME = 20;
-    public static final int REQUEST_CODE_SELECT_PLAYER = 23;
+    public static final int REQUEST_CODE_MP_NEW_GAME = 21;
+    public static final int REQUEST_CODE_MP_SEARCH_GAME = 22;
 
     // Singleplayer Savegame
     public static final String SAVEGAME_PARCEL = "savegame_parcel";

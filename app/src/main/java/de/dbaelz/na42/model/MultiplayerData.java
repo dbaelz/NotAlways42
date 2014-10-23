@@ -9,19 +9,23 @@ import de.dbaelz.na42.RoundState;
 public class MultiplayerData {
     private final String player1ID;
     private final String player2ID;
+    private final String player1Name;
+    private final String player2Name;
     private int[] resultPlayer1;
     private int[] resultPlayer2;
-    private int currentChallenge;
-    private int currentRound;
+    private int currentRoundPlayer1;
+    private int currentRoundPlayer2;
 
 
-    public MultiplayerData(int numberRounds, String player1ID, String player2ID) {
+    public MultiplayerData(int numberRounds, String player1ID, String player2ID, String player1Name, String player2Name) {
         this.player1ID = player1ID;
         this.player2ID = player2ID;
+        this.player1Name = player1Name;
+        this.player2Name = player2Name;
         this.resultPlayer1 = new int[numberRounds];
         this.resultPlayer2 = new int[numberRounds];
-        currentChallenge = -1;
-        currentRound = 1;
+        this.currentRoundPlayer1 = 1;
+        this.currentRoundPlayer2 = 1;
     }
 
     public MultiplayerData(byte[] data) {
@@ -40,10 +44,13 @@ public class MultiplayerData {
             for (int i = 0; i < jsonRoundsPlayer2.length(); i++) {
                 resultPlayer2[i] = jsonRoundsPlayer2.getInt(i);
             }
-            currentChallenge = object.getInt("current-challenge");
-            currentRound = object.getInt("current-round");
+
+            currentRoundPlayer1 = object.getInt("current-round-player1");
+            currentRoundPlayer2 = object.getInt("current-round-player2");
             player1ID = object.getString("player1ID");
             player2ID = object.getString("player2ID");
+            player1Name = object.getString("player1Name");
+            player2Name = object.getString("player2Name");
         } catch (JSONException e) {
             throw new RuntimeException("Can't convert JSON to data types!");
         } catch (NumberFormatException e) {
@@ -55,10 +62,6 @@ public class MultiplayerData {
         return resultPlayer1;
     }
 
-    public void setResultPlayer1(int[] resultPlayer1) {
-        this.resultPlayer1 = resultPlayer1;
-    }
-
     public void setResultPlayer1(int round, RoundState state) {
         resultPlayer1[round - 1] = state.getValue();
     }
@@ -67,32 +70,24 @@ public class MultiplayerData {
         return resultPlayer2;
     }
 
-    public void setResultPlayer2(int[] resultPlayer2) {
-        this.resultPlayer2 = resultPlayer2;
-    }
-
     public void setResultPlayer2(int round, RoundState state) {
         resultPlayer2[round - 1] = state.getValue();
     }
 
-    public int getCurrentChallenge() {
-        return currentChallenge;
+    public int getCurrentRoundPlayer1() {
+        return currentRoundPlayer1;
     }
 
-    public void setCurrentChallenge(int currentChallenge) {
-        this.currentChallenge = currentChallenge;
+    public void incrementRoundPlayer1() {
+        this.currentRoundPlayer1++;
     }
 
-    public int getCurrentRound() {
-        return currentRound;
+    public int getCurrentRoundPlayer2() {
+        return currentRoundPlayer2;
     }
 
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
-    }
-
-    public void incrementCurrentRound() {
-        this.currentRound++;
+    public void incrementRoundPlayer2() {
+        this.currentRoundPlayer2 ++;
     }
 
     public String getPlayer1ID() {
@@ -101,6 +96,35 @@ public class MultiplayerData {
 
     public String getPlayer2ID() {
         return player2ID;
+    }
+
+    public String getPlayer1Name() {
+        return player1Name;
+    }
+
+    public String getPlayer2Name() {
+        return player2Name;
+    }
+
+    public String getWinnerName() {
+        int wonPlayer1 = 0;
+        for (int game : resultPlayer1) {
+            if (game == 1) {
+                wonPlayer1++;
+            }
+        }
+
+        int wonPlayer2 = 0;
+        for (int game : resultPlayer2) {
+            if (game == 1) {
+                wonPlayer2++;
+            }
+        }
+
+        if (wonPlayer1 == wonPlayer2) {
+            return "Draw";
+        }
+        return (wonPlayer1 > wonPlayer2) ? getPlayer1Name() : getPlayer2Name();
     }
 
     @Override
@@ -117,10 +141,12 @@ public class MultiplayerData {
             JSONObject object = new JSONObject();
             object.put("result-player1", jsonResultPlayer1);
             object.put("result-player2", jsonResultPlayer2);
-            object.put("current-challenge", currentChallenge);
-            object.put("current-round", currentRound);
+            object.put("current-round-player1", currentRoundPlayer1);
+            object.put("current-round-player2", currentRoundPlayer2);
             object.put("player1ID", player1ID);
             object.put("player2ID", player2ID);
+            object.put("player1Name", player1Name);
+            object.put("player2Name", player2Name);
             return object.toString();
         } catch (JSONException e) {
             e.printStackTrace();
