@@ -48,14 +48,18 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         EventBus.getDefault().register(this);
+        mGoogleApiClient.connect();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
         EventBus.getDefault().unregister(this);
     }
 
