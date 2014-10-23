@@ -27,6 +27,7 @@
     <string name="menu_singleplayer_without_signin_cancel">Cancel</string>
     <string name="menu_quest_completed">You completed the quest %1$s</string>
     <string name="menu_quest_reward">Your reward: %1$s</string>
+    <string name="menu_load_savegame_progress">Loading savegame...</string>
 
     <!-- Singleplayer Fragment -->
     <string name="singleplayer_savegame_text">Current round: %1$d - Rounds won: %2$d</string>

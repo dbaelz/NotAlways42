@@ -177,7 +177,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
                 }
                 break;
             case R.id.menu_signin:
-                showProgressDialog();
+                showProgressDialog(mActivity.getString(R.string.menu_progress));
                 mActivity.getGoogleApiClient().connect();
                 break;
             case R.id.menu_signout:
@@ -195,10 +195,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
             if (data != null) {
                 if (data.hasExtra(Snapshots.EXTRA_SNAPSHOT_METADATA)) {
                     SnapshotMetadata snapshotMetadata = data.getParcelableExtra(Snapshots.EXTRA_SNAPSHOT_METADATA);
+                    showProgressDialog(mActivity.getString(R.string.menu_load_savegame_progress));
                     new LoadSavegameTask(snapshotMetadata).execute();
                 }
-            } else {
-
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -237,9 +236,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
         }
     }
 
-    private void showProgressDialog() {
+    private void showProgressDialog(String text) {
         mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setMessage(getString(R.string.menu_progress));
+        mProgressDialog.setMessage(text);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
@@ -287,9 +286,12 @@ public class MenuFragment extends Fragment implements View.OnClickListener, Ques
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.SAVEGAME_PARCEL, savegame);
                 fragment.setArguments(bundle);
+                if (mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
                 mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
             } else {
-                Toast.makeText(mActivity, getString(R.string.savegame_error_loading), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, mActivity.getString(R.string.savegame_error_loading), Toast.LENGTH_SHORT).show();
             }
         }
     }
