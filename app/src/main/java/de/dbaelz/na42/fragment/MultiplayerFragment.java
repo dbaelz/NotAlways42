@@ -224,7 +224,7 @@ public class MultiplayerFragment extends Fragment implements OnTurnBasedMatchUpd
 
     @Override
     public void onInvitationReceived(Invitation invitation) {
-        Log.d(Constants.LOG_TAG, "INVITATION RECEIVEID");
+        Log.d(Constants.LOG_TAG, "INVITATION RECEIVED");
     }
 
     @Override
@@ -236,7 +236,7 @@ public class MultiplayerFragment extends Fragment implements OnTurnBasedMatchUpd
     public void onTurnBasedMatchReceived(TurnBasedMatch turnBasedMatch) {
         // May not fired...
         // See issue https://code.google.com/p/play-games-platform/issues/detail?id=128
-        Log.d(Constants.LOG_TAG, "MATCH RECEIVEID");
+        Log.d(Constants.LOG_TAG, "MATCH RECEIVED");
         updateGame(turnBasedMatch);
     }
 
